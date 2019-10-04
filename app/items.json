@@ -1,0 +1,314 @@
+[
+	{
+		"id": 1,
+		"path":"Akali.png",
+		"name":"Akali",
+		"class":[1]
+	},
+	{
+		"id": 2,
+		"path":"Gnar.png",
+		"name":"Gnar",
+		"class":[9]
+	},
+	{
+		"id": 3,
+		"path":"Kayle.png",
+		"name":"Kayle",
+		"class":[7]
+	},
+	{
+		"id": 4,
+		"path":"Morgana.png",
+		"name":"Morgana",
+		"class":[10]
+	},
+	{
+		"id": 5,
+		"path":"Pyke.png",
+		"name":"Pyke",
+		"class":[1]
+	},
+	{
+		"id": 6,
+		"path":"Swain.png",
+		"name":"Swain",
+		"class":[9]
+	},
+	{
+		"id": 7,
+		"path":"Yasuo.png",
+		"name":"Yasuo",
+		"class":[2]
+	},
+	{
+		"id": 8,
+		"path":"Draven.png",
+		"name":"Draven",
+		"class":[2]
+	},
+	{
+		"id": 9,
+		"path":"Anivia.png",
+		"name":"Anivia",
+		"class":[4]
+	},
+	{
+		"id": 10,
+		"path":"Kennen.png",
+		"name":"Kennen",
+		"class":[4]
+	},
+	{
+		"id": 11,
+		"path":"Lucian.png",
+		"name":"Lucian",
+		"class":[6]
+	},
+	{
+		"id": 12,
+		"path":"MissFortune.png",
+		"name":"MissFortune",
+		"class":[6]
+	},
+	{
+		"id": 13,
+		"path":"Zed.png",
+		"name":"Zed",
+		"class":[1]
+	},
+	{
+		"id": 14,
+		"path":"Leona.png",
+		"name":"Leona",
+		"class":[5]
+	},
+	{
+		"id": 15,
+		"path":"Ahri.png",
+		"name":"Ahri",
+		"class":[10]
+	},
+	{
+		"id": 16,
+		"path":"Ashe.png",
+		"name":"Ashe",
+		"class":[8]
+	},
+	{
+		"id": 17,
+		"path":"Poppy.png",
+		"name":"Poppy",
+		"class":[7]
+	},
+	{
+		"id": 18,
+		"path":"Braum.png",
+		"name":"Braum",
+		"class":[5]
+	},
+	{
+		"id": 19,
+		"path":"Brand.png",
+		"name":"Brand",
+		"class":[4]
+	},
+	{
+		"id": 20,
+		"path":"Blitzcrank.png",
+		"name":"Blitzcrank",
+		"class":[3]
+	},
+	{
+		"id": 21,
+		"path":"AurelionSol.png",
+		"name":"AurelionSol",
+		"class":[10]
+	},
+	{
+		"id": 22,
+		"path":"Khazix.png",
+		"name":"Khazix",
+		"class":[1]
+	},
+	{
+		"id": 23,
+		"path":"Nidalee.png",
+		"name":"Nidalee",
+		"class":[9]
+	},
+	{
+		"id": 24,
+		"path":"Karthus.png",
+		"name":"Karthus",
+		"class":[10]
+	},
+	{
+		"id": 25,
+		"path":"Fiora.png",
+		"name":"Fiora",
+		"class":[2]
+	},
+	{
+		"id": 26,
+		"path":"Katarina.png",
+		"name":"Katarina",
+		"class":[1]
+	},
+	{
+		"id": 27,
+		"path":"Lulu.png",
+		"name":"Lulu",
+		"class":[10]
+	},
+	{
+		"id": 28,
+		"path":"Sejuani.png",
+		"name":"Sejuani",
+		"class":[7]
+	},
+	{
+		"id": 29,
+		"path":"Graves.png",
+		"name":"Graves",
+		"class":[6]
+	},
+	{
+		"id": 30,
+		"path":"Shen.png",
+		"name":"Shen",
+		"class":[2]
+	},
+	{
+		"id": 31,
+		"path":"Lissandra.png",
+		"name":"Lissandra",
+		"class":[4]
+	},
+	{
+		"id": 32,
+		"path":"Shyvana.png",
+		"name":"Shyvana",
+		"class":[9]
+	},
+	{
+		"id": 33,
+		"path":"Kindred.png",
+		"name":"Kindred",
+		"class":[8]
+	},
+	{
+		"id": 34,
+		"path":"Darius.png",
+		"name":"Darius",
+		"class":[7]
+	},
+	{
+		"id": 35,
+		"path":"Kassadin.png",
+		"name":"Kassadin",
+		"class":[10]
+	},
+	{
+		"id": 36,
+		"path":"Elise.png",
+		"name":"Elise",
+		"class":[9]
+	},
+	{
+		"id": 37,
+		"path":"Varus.png",
+		"name":"Varus",
+		"class":[8]
+	},
+	{
+		"id": 38,
+		"path":"Rengar.png",
+		"name":"Rengar",
+		"class":[1]
+	},
+	{
+		"id": 39,
+		"path":"Aatrox.png",
+		"name":"Aatrox",
+		"class":[2]
+	},
+	{
+		"id": 40,
+		"path":"Garen.png",
+		"name":"Garen",
+		"class":[7]
+	},
+	{
+		"id": 41,
+		"path":"Tristana.png",
+		"name":"Tristana",
+		"class":[6]
+	},
+	{
+		"id": 42,
+		"path":"Veigar.png",
+		"name":"Veigar",
+		"class":[10]
+	},
+	{
+		"id": 43,
+		"path":"Warwick.png",
+		"name":"Warwick",
+		"class":[3]
+	},
+	{
+		"id": 44,
+		"path":"Evelynn.png",
+		"name":"Evelynn",
+		"class":[1]
+	},
+	{
+		"id": 45,
+		"path":"Mordekaiser.png",
+		"name":"Mordekaiser",
+		"class":[7]
+	},
+	{
+		"id": 46,
+		"path":"Volibear.png",
+		"name":"Volibear",
+		"class":[3]
+	},
+	{
+		"id": 47,
+		"path":"RekSai.png",
+		"name":"RekSai",
+		"class":[3]
+	},
+	{
+		"id": 48,
+		"path":"TwistedFate.png",
+		"name":"TwistedFate",
+		"class":[10]
+	},
+	{
+		"id": 49,
+		"path":"Gangplank.png",
+		"name":"Gangplank",
+		"class":[2,6]
+	},
+	{
+		"id": 50,
+		"path":"Vayne.png",
+		"name":"Vayne",
+		"class":[8]
+	},
+	{
+		"id": 51,
+		"path":"Chogath.png",
+		"name":"Chogath",
+		"class":[3]
+	},
+	{
+		"id": 52,
+		"path":"spatula.png",
+		"name":"Spatula",
+		"class":[0]
+	}
+]
