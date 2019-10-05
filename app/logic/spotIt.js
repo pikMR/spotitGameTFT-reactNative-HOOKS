@@ -1,5 +1,4 @@
-(function(){
-function spotIt(input, callback) {
+export function spotIt(input, callback) {
     if(input.length >=14 && input.length < 19){
         return specialCase(input);
     }
@@ -83,12 +82,10 @@ function spotIt(input, callback) {
         }
     }
 
-    
+
     return refinedResults;
 
 }
-
-window.spotIt = spotIt;
 
 function specialCase(input){
     var result = [];
@@ -116,16 +113,16 @@ function specialCase(input){
 
 function k_combinations(set, k) {
 	var i, j, combs, head, tailcombs;
-	
+
 	if (k > set.length || k <= 0) {
 		return [];
 	}
-	
+
 	// K-sized set has only one K-sized subset.
 	if (k === set.length) {
 		return [set];
 	}
-	
+
 	// There is N 1-sized subsets in a N-sized set.
 	if (k === 1) {
 		combs = [];
@@ -172,4 +169,3 @@ function intersect(a, b)
 
   return result.length;
 }
-})();

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image} from 'react-native';
+import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView} from 'react-native';
 import Champs  from '../imagesChamp'
 import { useDispatch, useSelector } from 'react-redux';
 import {addData} from "../actions";
@@ -59,12 +59,27 @@ export default function Home(props) {
         );
     } else{
         return (
-            <View style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => `flat_${index}`}/>
-            </View>
+            <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
+            {data.map(
+                (round, arr_index) => (
+                  <View key={arr_index+"_view"} style={{
+        flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+
+      }}>
+                  <FlatList
+                      key={arr_index}
+                      data={round}
+                      renderItem={renderItem}
+                      keyExtractor={(item, index) => `flat_${index}`}
+                      />
+                      <View style={{backgroundColor:'black', height:10}}/>
+                  </View>
+
+                )
+            )}
+            </ScrollView>
         );
     }
 };
