@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView} from 'react-native';
+import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView, Button} from 'react-native';
 import Champs  from '../imagesChamp'
 import { useDispatch, useSelector } from 'react-redux';
-import {addData} from "../actions";
+import {addData,nextData} from "../actions";
 import Data from "../items";
 
 export function RenderFlatList({datalist,renderItem}){
@@ -28,11 +28,12 @@ export default function Home(props) {
     const dispatch = useDispatch();
 
     //1 - DECLARE VARIABLES
+    const [dataActive, setDataActive] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data,data_First, data_Second, data_Third, data_Fourth} = dataReducer;
+    const { data_active } = dataReducer;
 
     //==================================================================================================
 
@@ -51,6 +52,17 @@ export default function Home(props) {
             setIsFetching(false);
         }, 2000);
     };
+
+    const next = () => {
+      setIsFetching(true);
+      //delay the retrieval [Sample reasons only]
+      setTimeout(() => {
+          let _sumaActive = (dataActive+1)%4;
+          setDataActive(_sumaActive);
+          dispatch(nextData(_sumaActive));
+          setIsFetching(false);
+      }, 2000);
+    }
 
 
     //==================================================================================================
@@ -79,10 +91,11 @@ export default function Home(props) {
     } else{
         return (
           <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: 'red'}}>
-            <RenderFlatList datalist={data_First} renderItem={renderItem} />
-            <RenderFlatList datalist={data_Second} renderItem={renderItem} />
+            <RenderFlatList datalist={data_active} renderItem={renderItem} />
+            <Button title="Press me" onPress={() => next()} />
+            {/*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />
-            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />
+            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />*/}
           </View>
         );
     }
