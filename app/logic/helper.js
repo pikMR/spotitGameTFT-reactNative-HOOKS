@@ -18,9 +18,9 @@ export function GetDataSplit(data){
   let yourArray = UtilShuffleArray(data);
   let halfWayThough = Math.floor(yourArray.length/4);
   return [
-    ...spotIt(yourArray.slice(0, halfWayThough)),
-    ...spotIt(yourArray.slice(halfWayThough, halfWayThough*2)),
-    ...spotIt(yourArray.slice(halfWayThough*2, halfWayThough*3)),
-    ...spotIt(yourArray.slice(halfWayThough*3, yourArray.length))
+    spotIt(yourArray.slice(0, halfWayThough)),
+    spotIt(yourArray.slice(halfWayThough, halfWayThough*2)),
+    spotIt(yourArray.slice(halfWayThough*2, halfWayThough*3)),
+    spotIt(yourArray.slice(halfWayThough*3, yourArray.length))
   ];
 }
