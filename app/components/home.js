@@ -5,6 +5,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import {addData} from "../actions";
 import Data from "../items";
 
+export function RenderFlatList({datalist,renderItem}){
+  return (
+      <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
+      {datalist.map((round, arr_index) =>
+        <View key={arr_index+"_view"} style={{flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
+            <FlatList
+              key={arr_index}
+              data={round}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => `flat_${index}`}
+              />
+            <View style={{backgroundColor:'black', height:10}}/>
+         </View>
+        )}
+        </ScrollView>
+    )
+  }
+
+
 export default function Home(props) {
     const dispatch = useDispatch();
 
@@ -59,96 +78,12 @@ export default function Home(props) {
         );
     } else{
         return (
-          <View style={{
-  flex: 1,
-  flexDirection: 'column',
-  justifyContent: 'space-between',
-  backgroundColor: 'red'
-}}>
-          <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-{data_First.map(
-  (round, arr_index) => (
-    <View key={arr_index+"_view"} style={{
-flex: 1,
-flexDirection: 'column',
-justifyContent: 'space-between',
-
-}}>
-    <FlatList
-        key={arr_index}
-        data={round}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `flat_${index}`}
-        />
-        <View style={{backgroundColor:'black', height:10}}/>
-    </View>
-  )
-)}
-</ScrollView>
-<ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-{data_Second.map(
-  (round, arr_index) => (
-    <View key={arr_index+"_view"} style={{
-flex: 1,
-flexDirection: 'column',
-justifyContent: 'space-between',
-
-}}>
-    <FlatList
-        key={arr_index}
-        data={round}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `flat_${index}`}
-        />
-        <View style={{backgroundColor:'black', height:10}}/>
-    </View>
-
-  )
-)}
-</ScrollView>
-<ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-{data_Third.map(
-  (round, arr_index) => (
-    <View key={arr_index+"_view"} style={{
-flex: 1,
-flexDirection: 'column',
-justifyContent: 'space-between',
-
-}}>
-    <FlatList
-        key={arr_index}
-        data={round}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `flat_${index}`}
-        />
-        <View style={{backgroundColor:'black', height:10}}/>
-    </View>
-
-  )
-)}
-</ScrollView>
-<ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-{data_Fourth.map(
-  (round, arr_index) => (
-    <View key={arr_index+"_view"} style={{
-flex: 1,
-flexDirection: 'column',
-justifyContent: 'space-between',
-
-}}>
-    <FlatList
-        key={arr_index}
-        data={round}
-        renderItem={renderItem}
-        keyExtractor={(item, index) => `flat_${index}`}
-        />
-        <View style={{backgroundColor:'black', height:10}}/>
-    </View>
-
-  )
-)}
-</ScrollView>
-</View>
+          <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: 'red'}}>
+            <RenderFlatList datalist={data_First} renderItem={renderItem} />
+            <RenderFlatList datalist={data_Second} renderItem={renderItem} />
+            <RenderFlatList datalist={data_Third} renderItem={renderItem} />
+            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />
+          </View>
         );
     }
 };
