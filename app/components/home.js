@@ -8,18 +8,15 @@ import Data from "../items";
 export function RenderFlatList({datalist,renderItem}){
   return (
       <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-      {datalist.map((round, arr_index) =>
-        <View key={arr_index+"_view"} style={{flex: 1,flexDirection: 'column',justifyContent: 'space-between',}}>
+        <View style={{flex: 1,flexDirection: 'column',justifyContent: 'space-between'}}>
             <FlatList
-              key={arr_index}
-              data={round}
+              data={datalist}
               renderItem={renderItem}
               keyExtractor={(item, index) => `flat_${index}`}
               />
             <View style={{backgroundColor:'black', height:10}}/>
          </View>
-        )}
-        </ScrollView>
+      </ScrollView>
     )
   }
 
@@ -33,7 +30,7 @@ export default function Home(props) {
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data_active } = dataReducer;
+    const { data_active_user,data_active_adv, data} = dataReducer;
 
     //==================================================================================================
 
@@ -91,7 +88,8 @@ export default function Home(props) {
     } else{
         return (
           <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: 'red'}}>
-            <RenderFlatList datalist={data_active} renderItem={renderItem} />
+            <RenderFlatList datalist={data_active_user} renderItem={renderItem} />
+            <RenderFlatList datalist={data_active_adv} renderItem={renderItem} />
             <Button title="Press me" onPress={() => next()} />
             {/*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />

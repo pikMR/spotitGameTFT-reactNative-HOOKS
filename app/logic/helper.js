@@ -24,3 +24,15 @@ export function GetDataSplit(data){
     spotIt(yourArray.slice(halfWayThough*3, yourArray.length))
   ];
 }
+
+export function PullRandomValue(array){
+  let index = 0;
+  let sizeFlock = array.length;
+  let resultado = {};
+  if(sizeFlock > 0){
+    index = Math.floor(Math.random() * sizeFlock);
+    resultado = array[index];
+    array.splice(index,1);
+  }
+  return resultado;
+}
