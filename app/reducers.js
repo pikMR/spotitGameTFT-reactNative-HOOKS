@@ -25,6 +25,7 @@ const dataReducer = (state = dataState, action) => {
                ...state,
                data_active_user: _activeUser,
                data_active_adv: _activeAdv,
+               user_history: [...state.user_history,action.id]
              };
         default:
             return state;

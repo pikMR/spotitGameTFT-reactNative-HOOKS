@@ -1,24 +1,51 @@
 import React, {useEffect, useState} from 'react';
-import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView, Button} from 'react-native';
+import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView, Button,TouchableHighlight} from 'react-native';
 import Champs  from '../imagesChamp'
 import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData} from "../actions";
 import Data from "../items";
 
-export function RenderFlatList({datalist,renderItem}){
+export function RenderNoWrapList({datalist,renderItem}){
   return (
-      <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20}}>
-        <View style={{flex: 1,flexDirection: 'column',justifyContent: 'space-between'}}>
+      <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20 }}>
+        <View style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between'}}>
             <FlatList
               data={datalist}
               renderItem={renderItem}
               keyExtractor={(item, index) => `flat_${index}`}
+              horizontal={true}
               />
             <View style={{backgroundColor:'black', height:10}}/>
          </View>
       </ScrollView>
     )
   }
+
+  export function RenderWrapList({datalist,renderItem}){
+    return (
+      <View style={styles.outerCircle}>
+            <FlatList
+              data={datalist}
+              renderItem={renderItem}
+              keyExtractor={(item, index) => `flat_${index}`}
+              numColumns={2}
+              />
+      </View>
+      )
+    }
+
+  export function PanelHistorico({datalist,renderItem})
+  {
+    return (
+      <View style={[styles.container, styles.horizontal]}>
+      {
+        datalist.map((elem,index)=>(
+            <Image key={index+"_history_user"} source={Champs[elem]} style={{width: 50, height: 50}} />
+        ))
+      }
+      </View>
+      )
+    }
 
 
 export default function Home(props) {
@@ -30,7 +57,7 @@ export default function Home(props) {
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data_active_user,data_active_adv, data} = dataReducer;
+    const { data_active_user,data_active_adv, user_history} = dataReducer;
 
     //==================================================================================================
 
@@ -47,18 +74,18 @@ export default function Home(props) {
             const data  = Data;
             dispatch(addData(data));
             setIsFetching(false);
-        }, 2000);
+        }, 500);
     };
 
-    const next = () => {
+    const next = (id) => {
       setIsFetching(true);
       //delay the retrieval [Sample reasons only]
       setTimeout(() => {
           let _sumaActive = (dataActive+1)%4;
           setDataActive(_sumaActive);
-          dispatch(nextData(_sumaActive));
+          dispatch(nextData(_sumaActive,id));
           setIsFetching(false);
-      }, 2000);
+      }, 25);
     }
 
 
@@ -67,7 +94,20 @@ export default function Home(props) {
     //4 - RENDER FLATLIST ITEM
     const renderItem = ({item, index}) => {
         return (
-            <View style={styles.row}>
+          <TouchableHighlight onPress = { ()=>next(item.id) }>
+            <View style={[styles.container, styles.horizontal]}>
+                <Text style={styles.title}>
+                    {item.id}
+                </Text>
+                <Image source={Champs[item.id]} style={{width: 100, height: 100}} />
+            </View>
+            </TouchableHighlight>
+        )
+    };
+
+    const renderItemNoClick = ({item, index}) => {
+        return (
+            <View style={[styles.container, styles.horizontal]}>
                 <Text style={styles.title}>
                     {item.id}
                 </Text>
@@ -76,10 +116,20 @@ export default function Home(props) {
         )
     };
 
+    //4 - RENDER FLATLIST ITEM
+    const renderResultado = ({item, index}) => {
+        return (
+            <Text style={styles.title}>
+              {item}
+            </Text>
+        )
+    };
+
     //==================================================================================================
 
     //5 - RENDER
     if (isFetching) {
+
         return (
             <View style={styles.activityIndicatorContainer}>
                 <ActivityIndicator animating={true}/>
@@ -87,19 +137,30 @@ export default function Home(props) {
         );
     } else{
         return (
-          <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: 'red'}}>
-            <RenderFlatList datalist={data_active_user} renderItem={renderItem} />
-            <RenderFlatList datalist={data_active_adv} renderItem={renderItem} />
-            <Button title="Press me" onPress={() => next()} />
+          <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91'}}>
+            <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
+            <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
+            <PanelHistorico datalist={user_history} renderItem={renderResultado} />
             {/*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />
-            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />*/}
+            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />
+            <Button title="Press me" onPress={() => next()} />
+            */}
           </View>
         );
     }
 };
 
 const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'center'
+    },
+    horizontal: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      padding: 10
+    },
     activityIndicatorContainer:{
         backgroundColor: "#fff",
         alignItems: 'center',
@@ -121,5 +182,20 @@ const styles = StyleSheet.create({
     description:{
         marginTop: 5,
         fontSize: 14,
-    }
+    },
+    list: {
+      flexDirection: 'row',
+      flexWrap: 'wrap'
+    },
+    item: {
+    backgroundColor: 'red',
+    margin: 3,
+    width: 100
+  },
+  outerCircle: {
+    backgroundColor: '#FF8166',
+    borderRadius: 1/8,
+    justifyContent: 'center',
+    alignItems: 'center'
+}
 });

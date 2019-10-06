@@ -6,7 +6,8 @@ export const addData = (data) => ({
     data
 });
 
-export const nextData = (dataActive) => ({
+export const nextData = (dataActive,id) => ({
     type: DATA_NEXT,
-    dataActive
+    dataActive,
+    id
 });
