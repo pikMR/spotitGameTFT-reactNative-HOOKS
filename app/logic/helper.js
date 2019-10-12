@@ -36,3 +36,22 @@ export function PullRandomValue(array){
   }
   return resultado;
 }
+
+/*
+  Paso Elemento seleccionado, compruebo si ya existe en el historial, si existe +1 si no, lo introduzco y +1.
+  @return array actualizado con el elemento item.
+*/
+export function GetSelectedElement(item,array){
+  if(array)
+  {
+    let existe = array.find(elem=>elem.id === item.id);
+    if(existe)
+    {
+      existe.puntos++;
+    }else{
+      item.puntos++;
+      return [...array,item];
+    }
+  }
+  return array;
+}

@@ -36,11 +36,13 @@ export function RenderNoWrapList({datalist,renderItem}){
 
   export function PanelHistorico({datalist,renderItem})
   {
+    console.log("renderPanelHistorico");
+    console.log(datalist);
     return (
       <View style={[styles.container, styles.horizontal]}>
       {
         datalist.map((elem,index)=>(
-            <Image key={index+"_history_user"} source={Champs[elem]} style={{width: 50, height: 50}} />
+            <Image key={index+"_history_user"} source={Champs[elem.id]} style={{width: 50, height: 50}} />
         ))
       }
       </View>
@@ -57,14 +59,14 @@ export default function Home(props) {
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data_active_user,data_active_adv, user_history} = dataReducer;
+    const { data_active_user,data_active_adv, user_history, adv_history} = dataReducer;
 
     //==================================================================================================
 
     //2 - MAIN CODE BEGINS HERE
     useEffect(() => getData(), []);
 
-    //==================================================================================================
+    //=================================================================================================
 
     //3 - GET FLATLIST DATA
     const getData = () => {
@@ -77,13 +79,14 @@ export default function Home(props) {
         }, 500);
     };
 
-    const next = (id) => {
+    const next = (item) => {
       setIsFetching(true);
       //delay the retrieval [Sample reasons only]
       setTimeout(() => {
-          let _sumaActive = (dataActive+1)%4;
-          setDataActive(_sumaActive);
-          dispatch(nextData(_sumaActive,id));
+          let itemadv = data_active_adv[Math.floor(Math.random() * data_active_adv.length)];
+          let numActive = (dataActive+1)%4;
+          setDataActive(numActive);
+          dispatch(nextData(numActive,item,itemadv));
           setIsFetching(false);
       }, 25);
     }
@@ -94,7 +97,7 @@ export default function Home(props) {
     //4 - RENDER FLATLIST ITEM
     const renderItem = ({item, index}) => {
         return (
-          <TouchableHighlight onPress = { ()=>next(item.id) }>
+          <TouchableHighlight onPress = { ()=>next(item) }>
             <View style={[styles.container, styles.horizontal]}>
                 <Text style={styles.title}>
                     {item.id}
@@ -137,11 +140,13 @@ export default function Home(props) {
         );
     } else{
         return (
-          <View style={{  flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91'}}>
+          <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91'}}>
             <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
             <PanelHistorico datalist={user_history} renderItem={renderResultado} />
-            {/*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
+            <PanelHistorico datalist={adv_history} renderItem={renderResultado} />
+            {
+              /*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />
             <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />
             <Button title="Press me" onPress={() => next()} />
