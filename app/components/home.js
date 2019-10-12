@@ -5,6 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData} from "../actions";
 import Data from "../items";
 
+export function Puntuacion({puntos}){
+    return (
+        <Text
+          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+        >{String(puntos)}</Text>
+    )
+}
+
 export function RenderNoWrapList({datalist,renderItem}){
   return (
       <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20 }}>
@@ -36,13 +44,18 @@ export function RenderNoWrapList({datalist,renderItem}){
 
   export function PanelHistorico({datalist,renderItem})
   {
-    console.log("renderPanelHistorico");
-    console.log(datalist);
     return (
       <View style={[styles.container, styles.horizontal]}>
       {
-        datalist.map((elem,index)=>(
-            <Image key={index+"_history_user"} source={Champs[elem.id]} style={{width: 50, height: 50}} />
+        datalist.sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1).map((elem,index)=>(
+            <Image
+            key={index+"_history_user"}
+            source={Champs[elem.id]}
+            style={(elem.puntos === 2) ? {width: 60, height: 60,borderWidth: 1}
+            : (elem.puntos > 2) ? {width: 70, height: 70,borderWidth: 2} :
+            {width: 50, height: 50,borderWidth: 1} }
+            borderColor= {(elem.puntos === 2) ? 'coral' : (elem.puntos > 2) ? 'brown' : 'linen' }
+             />
         ))
       }
       </View>
@@ -56,6 +69,8 @@ export default function Home(props) {
     //1 - DECLARE VARIABLES
     const [dataActive, setDataActive] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
+    const [puntuacionUser, setPuntuacionUser] = useState(0);
+    const [puntuacionAdv, setPuntuacionAdv] = useState(0);
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
@@ -87,6 +102,8 @@ export default function Home(props) {
           let numActive = (dataActive+1)%4;
           setDataActive(numActive);
           dispatch(nextData(numActive,item,itemadv));
+          setPuntuacionUser(count=>count+((item.puntos * 2) - 1));
+          setPuntuacionAdv(count=>count+((itemadv.puntos * 2) - 1));
           setIsFetching(false);
       }, 25);
     }
@@ -144,7 +161,9 @@ export default function Home(props) {
             <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
             <PanelHistorico datalist={user_history} renderItem={renderResultado} />
+            <Puntuacion puntos={puntuacionUser} />
             <PanelHistorico datalist={adv_history} renderItem={renderResultado} />
+            <Puntuacion puntos={puntuacionAdv} />
             {
               /*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />
