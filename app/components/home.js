@@ -10,21 +10,21 @@ export function Puntuacion({puntos}){
     return (
         <Text
           style={styles.containerPuntuacion}
-        >{String(puntos)} points</Text>
+        >{String(puntos)} p</Text>
     )
 }
 
 export function RenderNoWrapList({datalist,renderItem}){
   return (
-      <ScrollView style={{flex:1, backgroundColor: '#F5F5F5', paddingTop:20 }}>
-        <View style={{flex: 1,flexDirection: 'row',justifyContent: 'space-between'}}>
-            <FlatList
-              data={datalist}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => `flat_${index}`}
-              horizontal={true}
-              />
-            <View style={{backgroundColor:'black', height:10}}/>
+      <ScrollView>
+        <View style={[styles.horizontalcenter]}>
+          <Text style={[styles.row]}> CPU Round </Text>
+          <FlatList
+            data={datalist}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => `flat_${index}`}
+            horizontal={true}
+            />
          </View>
       </ScrollView>
     )
@@ -33,6 +33,9 @@ export function RenderNoWrapList({datalist,renderItem}){
   export function RenderWrapList({datalist,renderItem}){
     return (
       <View style={styles.outerCircle}>
+            <View style={[styles.row]}>
+            <Text> SELECCIONA UN CAMPEÓN </Text>
+            </View>
             <FlatList
               data={datalist}
               renderItem={renderItem}
@@ -49,6 +52,7 @@ export function RenderNoWrapList({datalist,renderItem}){
       <View style={[styles.containerHistory]}>
       {
         datalist.sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1).map((elem,index)=>(
+          <View key={index+"_history_text"}>
             <Image
             key={index+"_history_user"}
             source={Champs[elem.id]}
@@ -57,6 +61,8 @@ export function RenderNoWrapList({datalist,renderItem}){
             {width: 50, height: 50,borderWidth: 1} }
             borderColor= {(elem.puntos === 2) ? 'coral' : (elem.puntos > 2) ? 'brown' : 'linen' }
              />
+            <Text style={{position:'absolute', top:-1, color:'white'}}>{(elem.puntos > 1) ? 'X'+elem.puntos : ''}</Text>
+          </View>
         ))
       }
       </View>
@@ -113,22 +119,16 @@ export default function Home(props) {
     const renderItem = ({item, index}) => {
         return (
           <TouchableHighlight onPress = { ()=>next(item) }>
-            <View style={[styles.container, styles.horizontal]}>
-                <Text style={styles.title}>
-                    {item.id}
-                </Text>
+            <View style={[styles.horizontal]}>
                 <Image source={Champs[item.id]} style={{width: 100, height: 100}} />
             </View>
-            </TouchableHighlight>
+          </TouchableHighlight>
         )
     };
 
     const renderItemNoClick = ({item, index}) => {
         return (
-            <View style={[styles.container, styles.horizontal]}>
-                <Text style={styles.title}>
-                    {item.id}
-                </Text>
+            <View style={styles.viewrinc}>
                 <Image source={Champs[item.id]} style={{width: 50, height: 50}} />
             </View>
         )
@@ -149,7 +149,7 @@ export default function Home(props) {
     if (isFetching) {
 
         return (
-            <View style={styles.activityIndicatorContainer}>
+            <View>
                 <ActivityIndicator animating={true}/>
             </View>
         );
@@ -183,15 +183,26 @@ export default function Home(props) {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center'
-    },
     horizontal: {
+      flex:1,
       flexDirection: 'row',
       justifyContent: 'space-around',
       padding: 10
     },
+    horizontalcenter: {
+      alignItems: 'center',
+      justifyContent: 'space-around',
+      flex: 1,
+    },
+    viewrinc:
+    {
+      padding:10,
+      backgroundColor: 'rgba(52, 52, 52, 0.5)',
+      borderRadius: 4,
+      borderWidth: 0.5,
+      borderColor: '#d6d7da',
+    }
+    ,
     /* stilo vista contenedora exterior que contiene el historial y puntuacion*/
     globalhistory:{
           flex: 1,
@@ -227,7 +238,7 @@ const styles = StyleSheet.create({
     row:{
         borderBottomWidth: 2,
         borderColor: "#ccc",
-        padding: 10
+        paddingTop: 20
     },
 
     title:{
