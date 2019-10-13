@@ -42,6 +42,7 @@ export function PullRandomValue(array){
   @return array actualizado con el elemento item.
 */
 export function GetSelectedElement(item,array){
+  let _element_resultado = {};
   if(array)
   {
     let existe = array.find(elem=>elem.id === item.id);
@@ -49,9 +50,12 @@ export function GetSelectedElement(item,array){
     {
       existe.puntos++;
     }else{
-      item.puntos++;
-      return [...array,item];
+      let _clone_item = JSON.parse(JSON.stringify(item));
+      _clone_item.puntos = 1;
+      array.push(_clone_item);
+      return _clone_item;
+      //return [...array,_clone_item];
     }
+    return existe;
   }
-  return array;
 }

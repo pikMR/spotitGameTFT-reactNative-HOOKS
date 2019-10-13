@@ -4,12 +4,13 @@ import Champs  from '../imagesChamp'
 import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData} from "../actions";
 import Data from "../items";
+import SlidingUpPanel from 'rn-sliding-up-panel';
 
 export function Puntuacion({puntos}){
     return (
         <Text
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-        >{String(puntos)}</Text>
+          style={styles.containerPuntuacion}
+        >{String(puntos)} points</Text>
     )
 }
 
@@ -45,7 +46,7 @@ export function RenderNoWrapList({datalist,renderItem}){
   export function PanelHistorico({datalist,renderItem})
   {
     return (
-      <View style={[styles.container, styles.horizontal]}>
+      <View style={[styles.containerHistory]}>
       {
         datalist.sort((a,b)=>(a.puntos > b.puntos) ? -1 : 1).map((elem,index)=>(
             <Image
@@ -69,12 +70,10 @@ export default function Home(props) {
     //1 - DECLARE VARIABLES
     const [dataActive, setDataActive] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
-    const [puntuacionUser, setPuntuacionUser] = useState(0);
-    const [puntuacionAdv, setPuntuacionAdv] = useState(0);
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data_active_user,data_active_adv, user_history, adv_history} = dataReducer;
+    const { data_active_user,data_active_adv, user_history, adv_history,puntos_user,puntos_adv} = dataReducer;
 
     //==================================================================================================
 
@@ -102,10 +101,9 @@ export default function Home(props) {
           let numActive = (dataActive+1)%4;
           setDataActive(numActive);
           dispatch(nextData(numActive,item,itemadv));
-          setPuntuacionUser(count=>count+((item.puntos * 2) - 1));
-          setPuntuacionAdv(count=>count+((itemadv.puntos * 2) - 1));
           setIsFetching(false);
       }, 25);
+
     }
 
 
@@ -157,13 +155,22 @@ export default function Home(props) {
         );
     } else{
         return (
-          <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91'}}>
+          <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91' }}>
             <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
-            <PanelHistorico datalist={user_history} renderItem={renderResultado} />
-            <Puntuacion puntos={puntuacionUser} />
-            <PanelHistorico datalist={adv_history} renderItem={renderResultado} />
-            <Puntuacion puntos={puntuacionAdv} />
+            <Button title='Show panel' onPress={() => this._panel.show()} />
+            <SlidingUpPanel ref={c => this._panel = c}>
+            <>
+            <View style={styles.globalhistory}>
+              <PanelHistorico datalist={user_history} renderItem={renderResultado} />
+              <Puntuacion puntos={puntos_user}/>
+            </View>
+            <View style={styles.globalhistory}>
+              <PanelHistorico datalist={adv_history} renderItem={renderResultado} />
+              <Puntuacion puntos={puntos_adv} />
+            </View>
+            </>
+            </SlidingUpPanel>
             {
               /*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
             <RenderFlatList datalist={data_Third} renderItem={renderItem} />
@@ -184,6 +191,31 @@ const styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       padding: 10
+    },
+    /* stilo vista contenedora exterior que contiene el historial y puntuacion*/
+    globalhistory:{
+          flex: 1,
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'flex-start'
+    },
+    /* stilo interior de pagina Puntuacion */
+    containerPuntuacion:{
+      flex:0.1,
+      height: 40,
+      padding:10,
+      borderColor: 'gray',
+      borderWidth: 1,
+      backgroundColor:'white',
+      color:'black'
+    },
+    /* stilo vista contenedora interior de pagina PanelHistorico*/
+    containerHistory: {
+      flex: 1,
+      justifyContent: 'space-around',
+      flexDirection: 'row',
+      padding:10,
+      flexWrap: 'wrap'
     },
     activityIndicatorContainer:{
         backgroundColor: "#fff",
