@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,useRef} from 'react';
 import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView, Button,TouchableHighlight} from 'react-native';
 import {GetImageChamp} from '../champsvg';
 import Champs from '../imagesChamp';
@@ -7,7 +7,7 @@ import {addData,nextData} from "../actions";
 import Data from "../items";
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Svg, {G, Path,Circle, Rect } from "react-native-svg";
-
+import Timer from "./Timer"
 
 export function Puntuacion({puntos})
 {
@@ -75,11 +75,11 @@ export function RenderNoWrapList({datalist,renderItem}){
 
     export function CategoryHistory({categorias,puntos})
     {
-      let _total_puntos = categorias.filter(p=>p>0);
-      _total_puntos = (_total_puntos.length > 0) ? _total_puntos.reduce((sum,x)=>sum+x) : 0;
+      let puntos_total = categorias.filter(p=>p>0);
+      puntos_total = (puntos_total.length > 0) ? puntos_total.reduce((sum,x)=>sum+x)+puntos : puntos;
       return (
         <View style={[styles.row]}>
-        <Puntuacion puntos={_total_puntos+puntos} />
+        <Puntuacion puntos={puntos_total} />
         {
           categorias.map((elem,index)=>
           (elem>0) &&
@@ -98,6 +98,7 @@ export function RenderNoWrapList({datalist,renderItem}){
 
 
 export default function Home(props) {
+    const timerRef = useRef();
     const dispatch = useDispatch();
     //1 - DECLARE VARIABLES
     const [dataActive, setDataActive] = useState(0);
@@ -135,6 +136,7 @@ export default function Home(props) {
     };
 
     const next = (item) => {
+      timerRef.current.reset();
       setIsFetching(true);
 
       //delay the retrieval [Sample reasons only]
@@ -193,6 +195,7 @@ export default function Home(props) {
           <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91' }}>
             <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
+            <Timer secstart={5} ref={timerRef}/>
             <Button title='Show panel' onPress={() => this._panel.show()} />
             <SlidingUpPanel ref={c => this._panel = c}>
             <>
