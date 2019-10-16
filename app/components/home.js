@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import { FlatList, StyleSheet, View, Text, ActivityIndicator, Image, ScrollView, Button,TouchableHighlight} from 'react-native';
-import Champs  from '../imagesChamp'
+import {GetImageChamp} from '../champsvg';
+import Champs from '../imagesChamp';
 import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData} from "../actions";
 import Data from "../items";
 import SlidingUpPanel from 'rn-sliding-up-panel';
+import Svg, {G, Path,Circle, Rect } from "react-native-svg";
 
-export function Puntuacion({puntos}){
+
+export function Puntuacion({puntos})
+{
     return (
         <Text
           style={styles.containerPuntuacion}
@@ -69,17 +73,48 @@ export function RenderNoWrapList({datalist,renderItem}){
       )
     }
 
+    export function CategoryHistory({categorias,puntos})
+    {
+      let _total_puntos = categorias.filter(p=>p>0);
+      _total_puntos = (_total_puntos.length > 0) ? _total_puntos.reduce((sum,x)=>sum+x) : 0;
+      return (
+        <View style={[styles.row]}>
+        <Puntuacion puntos={_total_puntos+puntos} />
+        {
+          categorias.map((elem,index)=>
+          (elem>0) &&
+          <View style={{
+          flexDirection: 'row',
+          backgroundColor: 'blue',
+          paddingRight:5
+        }} key={"cat_"+index}>
+            <GetImageChamp number={index} width={40} height={40} />
+            <Text>+{elem}</Text>
+          </View>)
+        }
+      </View>
+      )
+    }
+
 
 export default function Home(props) {
     const dispatch = useDispatch();
-
     //1 - DECLARE VARIABLES
     const [dataActive, setDataActive] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
 
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
-    const { data_active_user,data_active_adv, user_history, adv_history,puntos_user,puntos_adv} = dataReducer;
+    const {
+        data_active_user,
+        data_active_adv, // estructura con los datos de los elementos iterables
+        user_history,
+        adv_history,  // estructura con los datos seleccionados
+        puntos_user,
+        puntos_adv, // puntos actuales
+        catuser,
+        catadv  // contador de categorias seleccionadas
+    } = dataReducer;
 
     //==================================================================================================
 
@@ -101,6 +136,7 @@ export default function Home(props) {
 
     const next = (item) => {
       setIsFetching(true);
+
       //delay the retrieval [Sample reasons only]
       setTimeout(() => {
           let itemadv = data_active_adv[Math.floor(Math.random() * data_active_adv.length)];
@@ -144,7 +180,6 @@ export default function Home(props) {
     };
 
     //==================================================================================================
-
     //5 - RENDER
     if (isFetching) {
 
@@ -163,11 +198,11 @@ export default function Home(props) {
             <>
             <View style={styles.globalhistory}>
               <PanelHistorico datalist={user_history} renderItem={renderResultado} />
-              <Puntuacion puntos={puntos_user}/>
+              <CategoryHistory categorias={catuser} puntos={puntos_user} />
             </View>
             <View style={styles.globalhistory}>
               <PanelHistorico datalist={adv_history} renderItem={renderResultado} />
-              <Puntuacion puntos={puntos_adv} />
+              <CategoryHistory categorias={catadv} puntos={puntos_adv} />
             </View>
             </>
             </SlidingUpPanel>

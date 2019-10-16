@@ -59,3 +59,15 @@ export function GetSelectedElement(item,array){
     return existe;
   }
 }
+
+//  Función que devuelve el array sumador de clases actualizado
+//  En el caso de que no se haya repetido el elemento (puntos===1) sumamos.
+export function GetCategoryUpdate(array,elemento){
+  if(elemento.puntos===1)
+  {
+    array[elemento.clase[0]]++;
+    return array;
+  }else{
+    return array;
+  }
+}
