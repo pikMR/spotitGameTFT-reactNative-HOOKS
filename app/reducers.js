@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import { GetJsonObject, GetDataSplit, PullRandomValue,GetSelectedElement,GetRandomElement,GetCategoryUpdate } from './logic/helper';
-import { DATA_AVAILABLE,DATA_NEXT } from "./actions" //Import the actions types constant we defined in our actions
+import { GetJsonObject, GetDataSplit, PullRandomValue,GetReducerData } from './logic/helper';
+import { DATA_AVAILABLE,DATA_NEXT,DATA_NEXT_TIMER,RESTART_TIMER } from "./actions" //Import the actions types constant we defined in our actions
 
 let dataState = {
   data:[],
@@ -11,11 +11,25 @@ let dataState = {
   puntos_user:0,
   puntos_adv:0,
   catuser : new Array(11).fill(-1),
-  catadv : new Array(11).fill(-1)
+  catadv : new Array(11).fill(-1),
+  restartTimer: false,
+  numActive:0
 };
 
 const dataReducer = (state = dataState, action) => {
     switch (action.type) {
+
+        case DATA_NEXT_TIMER:
+          // Selección random del usuario y adversario
+          let t_random_adv = Math.floor(Math.random() * state.data_active_adv.length);
+          let t_random_user = Math.floor(Math.random() * state.data_active_user.length);
+          let t_itemadv = state.data_active_adv[t_random_adv];
+          let t_itemuser = state.data_active_user[t_random_user];
+          return GetReducerData(t_itemuser,t_itemadv,state);
+
+        case RESTART_TIMER:
+            return {...state,restartTimer: action.restart}
+
         case DATA_AVAILABLE:
             let _jsonData = GetJsonObject(action.data);
             let _partes = GetDataSplit(_jsonData);
@@ -30,26 +44,7 @@ const dataReducer = (state = dataState, action) => {
               originalData: _jsonData
              };
         case DATA_NEXT:
-            // item: elemento seleccionado por usuario , itemadv : elemento random cpu
-            // busca en historial y +1 o lo introduce con +1
-            let _userHistory = GetSelectedElement(action.item,state.user_history);
-            let _advHistory = GetSelectedElement(action.itemadv,state.adv_history);
-            // sumador a array de categorias
-            let _userCat = GetCategoryUpdate(state.catuser, _userHistory);
-            let _advCat = GetCategoryUpdate(state.catadv, _advHistory);
-            // fase de obtención del nuevo ROUND
-            let _copy_data = [...state.data[action.numActive]];
-            let _activeUser = PullRandomValue(_copy_data);
-            let _activeAdv = PullRandomValue(_copy_data);
-             return {
-               ...state,
-               data_active_user: _activeUser,
-               data_active_adv: _activeAdv,
-               puntos_user: (state.puntos_user+((_userHistory.puntos * 2) - 1)) ,
-               puntos_adv: (state.puntos_adv+((_advHistory.puntos * 2) - 1)),
-               catuser: _userCat,
-               catadv: _advCat
-             };
+            return GetReducerData(action.item,action.itemadv,state);
         default:
             return state;
     }

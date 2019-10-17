@@ -1,23 +1,28 @@
 import React, { useState, useEffect,forwardRef,useImperativeHandle } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { TextInput, View, Button, StyleSheet} from 'react-native';
-const Timer = forwardRef(({secstart,ref}) => {
+import {nextDataTimer,updateTimer} from "../actions";
+const Timer = ({secstart}) => {
+  const dispatch = useDispatch();
+  const dataReducer = useSelector((state) => state.dataReducer);
   const [seconds, setSeconds] = useState(secstart);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(true);
+  const { restartTimer } = dataReducer;
 
-  useImperativeHandle(ref, () => ({
-    reset() {
+
+    function reset() {
       setSeconds(secstart);
-      setIsActive(false);
+      setIsActive(true);
+      dispatch(nextDataTimer());
     }
-  }));
+
+    function resetTimer(){
+      setSeconds(secstart);
+      setIsActive(true);
+    }
 
   function toggle() {
     setIsActive(!isActive);
-  }
-
-  function reset() {
-    setSeconds(secstart);
-    setIsActive(false);
   }
 
   useEffect(() => {
@@ -25,7 +30,7 @@ const Timer = forwardRef(({secstart,ref}) => {
     if (isActive) {
       interval = setInterval(() => {
         if(seconds===0){
-            setSeconds(secstart);
+            reset();
         }else{
           setSeconds(seconds => seconds - 1);
         }
@@ -59,8 +64,7 @@ const Timer = forwardRef(({secstart,ref}) => {
       </View>
     </View>
   );
-}
-);
+};
 
 const styles = StyleSheet.create({
   app: {

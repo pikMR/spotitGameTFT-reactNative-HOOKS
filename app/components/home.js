@@ -101,7 +101,6 @@ export default function Home(props) {
     const timerRef = useRef();
     const dispatch = useDispatch();
     //1 - DECLARE VARIABLES
-    const [dataActive, setDataActive] = useState(0);
     const [isFetching, setIsFetching] = useState(false);
 
     //Access Redux Store State
@@ -136,18 +135,9 @@ export default function Home(props) {
     };
 
     const next = (item) => {
-      timerRef.current.reset();
-      setIsFetching(true);
-
-      //delay the retrieval [Sample reasons only]
-      setTimeout(() => {
-          let itemadv = data_active_adv[Math.floor(Math.random() * data_active_adv.length)];
-          let numActive = (dataActive+1)%4;
-          setDataActive(numActive);
-          dispatch(nextData(numActive,item,itemadv));
-          setIsFetching(false);
-      }, 25);
-
+      timerRef.current.resetTimer();
+      let itemadv = data_active_adv[Math.floor(Math.random() * data_active_adv.length)];
+      dispatch(nextData(item,itemadv));
     }
 
 
@@ -195,7 +185,7 @@ export default function Home(props) {
           <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91' }}>
             <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
-            <Timer secstart={5} ref={timerRef}/>
+            <Timer secstart={5} ref={timerRef} />
             <Button title='Show panel' onPress={() => this._panel.show()} />
             <SlidingUpPanel ref={c => this._panel = c}>
             <>
