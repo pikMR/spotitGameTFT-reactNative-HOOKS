@@ -18,7 +18,6 @@ let dataState = {
 
 const dataReducer = (state = dataState, action) => {
     switch (action.type) {
-
         case DATA_NEXT_TIMER:
           // Selección random del usuario y adversario
           let t_random_adv = Math.floor(Math.random() * state.data_active_adv.length);
@@ -33,9 +32,8 @@ const dataReducer = (state = dataState, action) => {
         case DATA_AVAILABLE:
             let _jsonData = GetJsonObject(action.data);
             let _partes = GetDataSplit(_jsonData);
-            let _parte_inicio = [..._partes[0]];
-            let _pinicio = PullRandomValue(_parte_inicio);
-            let _padv = PullRandomValue(_parte_inicio);
+            let _pinicio = PullRandomValue(_partes[0]);
+            let _padv = PullRandomValue(_partes[0]);
 
             return {...state,
               data_active_user:_pinicio,

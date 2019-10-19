@@ -1,6 +1,6 @@
 import React, { useState, useEffect,forwardRef,useImperativeHandle,useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { TextInput, View, Button, StyleSheet} from 'react-native';
+import { Text, View, Button, StyleSheet} from 'react-native';
 import {nextDataTimer,updateTimer} from "../actions";
 const Timer = forwardRef((props, ref) =>
 {
@@ -50,26 +50,10 @@ const Timer = forwardRef((props, ref) =>
   }, [isActive, seconds]);
 
   return (
-    <View style={[styles.app]} id="contador">
-      <TextInput style={[styles.time]}>
+    <View style={[styles.app]}>
+      <Text style={[styles.time]}>
         {seconds}s
-      </TextInput>
-      <View style={[styles.row]}>
-        <Button
-  className="button"
-  title="Press me"
-  color="#f194ff"
-  onPress={toggle}>
-          {isActive ? 'Pause' : 'Start'}
-        </Button>
-        <Button
-  className="button"
-  title="Press me"
-  color="#f194ff"
-  onPress={reset}>
-          Reset
-        </Button>
-      </View>
+      </Text>
     </View>
   );
 });
@@ -81,11 +65,15 @@ const styles = StyleSheet.create({
   flex:1,
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
-  color: 'white'
+  justifyContent: 'center'
 },
 time: {
-  padding: 2
+  padding: 2,
+  color: '#f8ffad',
+  fontFamily: 'sans-serif',
+  fontSize: 40,
+  fontWeight: 'bold',
+  textAlign: 'center'
 },
 button: {
   padding: 1,

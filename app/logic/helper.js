@@ -25,15 +25,20 @@ export function GetDataSplit(data){
   ];
 }
 
-export function PullRandomValue(array){
+export function PullRandomValue(array)
+{
+  console.log("_PullRandomValue_length : "+array.length);
   let index = 0;
   let sizeFlock = array.length;
   let resultado = {};
-  if(sizeFlock > 0){
+  if(sizeFlock > 0)
+  {
     index = Math.floor(Math.random() * sizeFlock);
     resultado = array[index];
     array.splice(index,1);
   }
+  console.log("fin_PullRandomValue_length : "+array.length);
+  console.log("fin_PullRandomValue : " + JSON.stringify(array));
   return resultado;
 }
 
@@ -80,9 +85,8 @@ export function GetReducerData(item,itemadv,state)
   let _advCat = GetCategoryUpdate(state.catadv, _advHistory);
   // fase de obtención del nuevo ROUND
   let _dataactive = (state.numActive+1)%4;
-  let _copy_data = [...state.data[_dataactive]];
-  let _activeUser = PullRandomValue(_copy_data);
-  let _activeAdv = PullRandomValue(_copy_data);
+  let _activeUser = PullRandomValue(state.data[_dataactive]);
+  let _activeAdv = PullRandomValue(state.data[_dataactive]);
   return {
     ...state,
     data_active_user: _activeUser,
