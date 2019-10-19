@@ -98,11 +98,10 @@ export function RenderNoWrapList({datalist,renderItem}){
 
 
 export default function Home(props) {
-    const timerRef = useRef();
+    const refTimer = useRef(null); // call timer with ref
     const dispatch = useDispatch();
     //1 - DECLARE VARIABLES
     const [isFetching, setIsFetching] = useState(false);
-
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
     const {
@@ -135,18 +134,16 @@ export default function Home(props) {
     };
 
     const next = (item) => {
-      timerRef.current.resetTimer();
+      refTimer.current.resetTimer(); // reinicio a tiempo concreto.
       let itemadv = data_active_adv[Math.floor(Math.random() * data_active_adv.length)];
       dispatch(nextData(item,itemadv));
     }
 
-
     //==================================================================================================
-
     //4 - RENDER FLATLIST ITEM
     const renderItem = ({item, index}) => {
         return (
-          <TouchableHighlight onPress = { ()=>next(item) }>
+          <TouchableHighlight onPress = { ()=> next(item) }>
             <View style={[styles.horizontal]}>
                 <Image source={Champs[item.id]} style={{width: 100, height: 100}} />
             </View>
@@ -183,9 +180,9 @@ export default function Home(props) {
     } else{
         return (
           <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91' }}>
-            <RenderWrapList datalist={data_active_user} renderItem={renderItem} />
+            <RenderWrapList datalist={data_active_user} renderItem={renderItem}/>
             <RenderNoWrapList datalist={data_active_adv} renderItem={renderItemNoClick} />
-            <Timer secstart={5} ref={timerRef} />
+            <Timer secstart={5} ref={refTimer}  />
             <Button title='Show panel' onPress={() => this._panel.show()} />
             <SlidingUpPanel ref={c => this._panel = c}>
             <>
@@ -199,12 +196,6 @@ export default function Home(props) {
             </View>
             </>
             </SlidingUpPanel>
-            {
-              /*<RenderFlatList datalist={data_Second} renderItem={renderItem} />
-            <RenderFlatList datalist={data_Third} renderItem={renderItem} />
-            <RenderFlatList datalist={data_Fourth} renderItem={renderItem} />
-            <Button title="Press me" onPress={() => next()} />
-            */}
           </View>
         );
     }

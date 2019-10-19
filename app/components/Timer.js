@@ -1,26 +1,34 @@
-import React, { useState, useEffect,forwardRef,useImperativeHandle } from 'react';
+import React, { useState, useEffect,forwardRef,useImperativeHandle,useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { TextInput, View, Button, StyleSheet} from 'react-native';
 import {nextDataTimer,updateTimer} from "../actions";
-const Timer = ({secstart}) => {
+const Timer = forwardRef((props, ref) =>
+{
+  // redux lanzar next
   const dispatch = useDispatch();
   const dataReducer = useSelector((state) => state.dataReducer);
-  const [seconds, setSeconds] = useState(secstart);
-  const [isActive, setIsActive] = useState(true);
-  const { restartTimer } = dataReducer;
 
+  // estados timer
+  const [seconds, setSeconds] = useState(props.secstart);
+  const [isActive, setIsActive] = useState(true);
+
+  // necesario para hacer reset desde padre
+  const { forwardRef } = props;
 
     function reset() {
-      setSeconds(secstart);
+      setSeconds(props.secstart);
       setIsActive(true);
       dispatch(nextDataTimer());
     }
 
-    function resetTimer(){
-      setSeconds(secstart);
-      setIsActive(true);
-    }
+    useImperativeHandle(ref, () => ({
+      resetTimer(){
+        setSeconds(props.secstart);
+        setIsActive(true);
+      }
+    }));
 
+  // parar e iniciar
   function toggle() {
     setIsActive(!isActive);
   }
@@ -35,14 +43,14 @@ const Timer = ({secstart}) => {
           setSeconds(seconds => seconds - 1);
         }
       }, 1000);
-    } else if (!isActive && seconds === secstart) {
+    } else if (!isActive && seconds === props.secstart) {
       clearInterval(interval);
     }
     return () => clearInterval(interval);
   }, [isActive, seconds]);
 
   return (
-    <View style={[styles.app]}>
+    <View style={[styles.app]} id="contador">
       <TextInput style={[styles.time]}>
         {seconds}s
       </TextInput>
@@ -64,7 +72,7 @@ const Timer = ({secstart}) => {
       </View>
     </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   app: {
