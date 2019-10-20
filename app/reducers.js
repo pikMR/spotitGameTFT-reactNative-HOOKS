@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { GetJsonObject, GetDataSplit, PullRandomValue,GetReducerData } from './logic/helper';
-import { DATA_AVAILABLE,DATA_NEXT,DATA_NEXT_TIMER,RESTART_TIMER } from "./actions" //Import the actions types constant we defined in our actions
+import { DATA_AVAILABLE,DATA_NEXT,DATA_NEXT_TIMER,RESTART } from "./actions" //Import the actions types constant we defined in our actions
 
 let dataState = {
   data:[],
@@ -12,7 +12,6 @@ let dataState = {
   puntos_adv:0,
   catuser : new Array(11).fill(-1),
   catadv : new Array(11).fill(-1),
-  restartTimer: false,
   numActive:0
 };
 
@@ -26,7 +25,7 @@ const dataReducer = (state = dataState, action) => {
           let t_itemuser = state.data_active_user[t_random_user];
           return GetReducerData(t_itemuser,t_itemadv,state);
 
-        case RESTART_TIMER:
+        case RESTART:
             return {...state,restartTimer: action.restart}
 
         case DATA_AVAILABLE:
@@ -39,7 +38,14 @@ const dataReducer = (state = dataState, action) => {
               data_active_user:_pinicio,
               data_active_adv:_padv,
               data:[[..._partes[0]],[..._partes[1]],[..._partes[2]],[..._partes[3]]],
-              originalData: _jsonData
+              originalData: _jsonData,
+              user_history:[],
+              adv_history:[],
+              puntos_user:0,
+              puntos_adv:0,
+              catuser : new Array(11).fill(-1),
+              catadv : new Array(11).fill(-1),
+              numActive:0
              };
         case DATA_NEXT:
             return GetReducerData(action.item,action.itemadv,state);

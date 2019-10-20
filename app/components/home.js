@@ -1,14 +1,16 @@
-import React, {useEffect, useState,useRef} from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Image, Button,TouchableHighlight} from 'react-native';
+import React, {useEffect, useState,useRef,Component} from 'react';
+import { StyleSheet, View, Text, ActivityIndicator, Image, Button,TouchableHighlight,ImageBackground} from 'react-native';
 import {GetImageChamp} from '../champsvg';
 import Champs from '../imagesChamp';
 import { useDispatch, useSelector } from 'react-redux';
-import {addData,nextData} from "../actions";
+import {addData,nextData,restartData} from "../actions";
 import Data from "../items";
 import SlidingUpPanel from 'rn-sliding-up-panel';
 import Svg, {G, Path,Circle, Rect } from "react-native-svg";
-import Timer from "./Timer"
-import { PanelResultado,Puntuacion,RenderNoWrapList,RenderWrapList,PanelHistorico } from "../pages/home"
+import Timer from "./Timer";
+import { PanelResultado,Puntuacion,RenderNoWrapList,RenderWrapList,PanelHistorico } from "../pages/home";
+
+
 
     function calcularPuntosConCategorias(categorias,puntos)
     {
@@ -41,14 +43,11 @@ import { PanelResultado,Puntuacion,RenderNoWrapList,RenderWrapList,PanelHistoric
     }
 
 
-export default function Home(props) {
+ export default function Home(props) {
     const refTimer = useRef(null); // call timer with ref
     const dispatch = useDispatch();
     //1 - DECLARE VARIABLES
     const [isFetching, setIsFetching] = useState(false);
-    const [pointsUser,setPointsUser]=useState(0);
-    const [pointsAdv,setPointsAdv] = useState(0);
-
     //Access Redux Store State
     const dataReducer = useSelector((state) => state.dataReducer);
     const {
@@ -75,6 +74,13 @@ export default function Home(props) {
             setIsFetching(false);
         }, 500);
     };
+
+    const restart=() => {
+      setTimeout(() => {
+        dispatch(addData(Data));
+        refTimer.current.resetTimer();
+      },2000);
+    }
 
     const next = (item) => {
       refTimer.current.resetTimer(); // reinicio a tiempo concreto.
@@ -120,7 +126,6 @@ export default function Home(props) {
     } else{
         return (
           <View style={{ flex: 1,  flexDirection: 'column',  justifyContent: 'space-between',  backgroundColor: '#F7FF91' }}>
-
             {
               (data_active_user.length > 0 && data_active_adv.length) ?
               <>
@@ -136,7 +141,6 @@ export default function Home(props) {
                  />
               </>
             }
-
             <View style={{
             position:'relative',
             flexDirection: 'row',
@@ -149,15 +153,15 @@ export default function Home(props) {
           <TouchableHighlight onPress={() => this._panel.show()} style={styles.graph}>
                 <Image style={styles.button} source={require('assets/graph.png')} />
           </TouchableHighlight>
-          <TouchableHighlight onPress={() => this._panel.show()} style={styles.restart}>
+          <TouchableHighlight onPress={() => dispatch(addData(Data))} style={styles.restart}>
                 <Image style={styles.button} source={require('assets/restart.png')} />
           </TouchableHighlight>
-          <TouchableHighlight onPress={() => this._panel.show()} style={styles.info}>
+          <TouchableHighlight  onPress={() => props.navigation.navigate('B')} style={styles.info}>
                 <Image style={styles.button} source={require('assets/informacion.png')} />
           </TouchableHighlight>
           </View>
 
-              </View>
+      </View>
               <SlidingUpPanel ref={c => this._panel = c}>
               <>
               <View style={styles.globalhistory}>
@@ -170,6 +174,7 @@ export default function Home(props) {
               </View>
               </>
               </SlidingUpPanel>
+
           </View>
         );
     }
