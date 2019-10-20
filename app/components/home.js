@@ -1,16 +1,13 @@
 import React, {useEffect, useState,useRef,Component} from 'react';
-import { StyleSheet, View, Text, ActivityIndicator, Image, Button,TouchableHighlight,ImageBackground} from 'react-native';
+import { StyleSheet, View, Text, ActivityIndicator, Image, Button,TouchableHighlight} from 'react-native';
 import {GetImageChamp} from '../champsvg';
 import Champs from '../imagesChamp';
 import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData,restartData} from "../actions";
 import Data from "../items";
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import Svg, {G, Path,Circle, Rect } from "react-native-svg";
 import Timer from "./Timer";
 import { PanelResultado,Puntuacion,RenderNoWrapList,RenderWrapList,PanelHistorico } from "../pages/home";
-
-
 
     function calcularPuntosConCategorias(categorias,puntos)
     {
