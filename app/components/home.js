@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {addData,nextData,restartData} from "../actions";
 import Data from "../items";
 import SlidingUpPanel from 'rn-sliding-up-panel';
-import Timer from "./Timer";
+import Timer from "./Timer";import { Audio } from 'expo';
 import { PanelResultado,Puntuacion,RenderNoWrapList,RenderWrapList,PanelHistorico } from "../pages/home";
 
     function calcularPuntosConCategorias(categorias,puntos)
